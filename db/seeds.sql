@@ -1,9 +1,6 @@
-INSERT INTO movies (movie_name)
-VALUES ("Lion King"),
-       ("The Godfather"),
-       ("West Side Story"),
-       ("Parasite"),
-       ("The Wizard of Oz");
+INSERT INTO employee (id, first_name, last_name, role_id, manager_id)
+VALUES (001, "John", "Dave", "Engineer", 777),
+
 
 INSERT INTO reviews (movie_id, review)
 VALUES (1, "Zazu is underrated. Give that hornbill a sequel!"),
