@@ -1,6 +1,7 @@
 const express = require('express');
 // Import and require mysql2
 const mysql = require('mysql2');
+const inquirer = require('inquirer')
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -16,11 +17,18 @@ const db = mysql.createConnection(
     // MySQL username,
     user: 'root',
     // TODO: Add MySQL password here
-    password: '',
-    database: 'movies_db'
+    password: 'abc123',
+    database: 'employees_db'
   },
-  console.log(`Connected to the movies_db database.`)
+  console.log(`Connected to the employees_db database.`)
 );
+
+console.log(`
+ ___        __        __       ___  ___          ___  ___  __   ___  __  
+|__   |\\/| |__) |    /  \\ \\ / |__  |__  __ |__/ |__  |__  |__) |__  |__) 
+|___  |  | |    |___ \\__/  |  |___ |___    |  \\ |___ |___ |    |___ |  \\ 
+                                                                         
+`);
 
 // Create a movie
 app.post('/api/new-movie', ({ body }, res) => {

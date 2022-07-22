@@ -13,4 +13,3 @@ VALUES (1, "Zazu is underrated. Give that hornbill a sequel!"),
        (5, "The tin man gave a metallic, hollow performance"),
        (1, "Hakuna matata"),
        (5, "Those flying monkeys are nightmare fuel!");
-       
