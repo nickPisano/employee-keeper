@@ -47,8 +47,64 @@ const init = () => {
   ])
   .then(res => {
     switch (res.choice) {
-
+      case "View All Employees":
+        viewEmployee ()
+        break;
+        
+        case "Add Employees":
+        addEmployee ()
+        break;
+        
+        case "Update Employee Role":
+        updateEmployee ()
+        break;
+        
+        case "View All Roles":
+        viewRoles ()
+        break;
+        
+        case "Add Role":
+        addRoles ()
+        break;
+        
+        case "View All Departments":
+        viewDepartments ()
+        break;
+        
+        case "Add Department":
+        addDepartments ()
+        break;
+        
+        case "Quit":
+        finishPrompt ()
+        break;
     }
   })
 }
 
+function viewEmployee() {
+  const sql = `
+  SELECT e.id, e.first_name, e.last_name, role.title, department.name AS department, role.salary, CONCAT(m.first_name, ' ' ,m.last_name) AS Manager
+  FROM employee e 
+  LEFT JOIN employee m 
+  ON e.manager_id = m.id
+  JOIN role
+  ON e.role_id = role.id
+  JOIN department
+  ON role.department_id = department.id;
+  `
+  ;
+  
+  db.query(sql, (err, rows) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("\n")
+      console.table(rows)
+    }
+    console.log("\n")
+    init();
+  });
+}
+
+init();
