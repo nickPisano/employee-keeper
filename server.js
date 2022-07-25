@@ -23,7 +23,8 @@ const db = mysql.createConnection(
   console.log(`Connected to the employees_db database.`)
 );
 
-console.log(`
+const serverLogo = () => {
+  console.log (`
 ▄████████   ▄▄▄▄███▄▄▄▄      ▄███████▄  ▄█        ▄██████▄  ▄██   ▄      ▄████████    ▄████████         ▄█   ▄█▄    ▄████████    ▄████████    ▄███████▄    ▄████████    ▄████████ 
 ███    ███ ▄██▀▀▀███▀▀▀██▄   ███    ███ ███       ███    ███ ███   ██▄   ███    ███   ███    ███        ███ ▄███▀   ███    ███   ███    ███   ███    ███   ███    ███   ███    ███ 
 ███    █▀  ███   ███   ███   ███    ███ ███       ███    ███ ███▄▄▄███   ███    █▀    ███    █▀         ███▐██▀     ███    █▀    ███    █▀    ███    ███   ███    █▀    ███    ███ 
@@ -34,8 +35,10 @@ console.log(`
 ██████████  ▀█   ███   █▀   ▄████▀      █████▄▄██  ▀██████▀   ▀█████▀    ██████████   ██████████        ███   ▀█▀   ██████████   ██████████  ▄████▀        ██████████   ███    ███ 
                                         ▀                                                               ▀                                                               ███    ███                                                                      
 `);
+};
 
-const init = () => {
+const serverLpr = () => {
+  serverLogo();
   inquirer
   .prompt([
     {
@@ -92,8 +95,7 @@ function viewEmployee() {
   ON e.role_id = role.id
   JOIN department
   ON role.department_id = department.id;
-  `
-  ;
+  `;
   
   db.query(sql, (err, rows) => {
     if (err) {
@@ -103,8 +105,8 @@ function viewEmployee() {
       console.table(rows)
     }
     console.log("\n")
-    init();
+    serverLpr();
   });
 }
 
-init();
+serverLpr();
