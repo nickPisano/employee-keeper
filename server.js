@@ -109,8 +109,6 @@ function viewEmployee() {
   });
 }
 
-
-//function to add an employees
 function addEmployee() {
   const sql = `
         SELECT employee.id, first_name, last_name, title, role.id FROM employee
@@ -194,7 +192,6 @@ function addEmployee() {
   });
 }
 
-//function to update an employees
 function updateEmployee() {
 
   const sql = `
@@ -257,5 +254,53 @@ function updateEmployee() {
   });
 }
 
+function addRoles () {
+  const sql = `SELECT id, name FROM department `;
+  let departmentInp = []
+  let departmentInpId = []
+  
+  db.query(sql, (err, rows) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    departmentInp = rows
+    departmentInpId = departmentInp.map(element => {
+      return {name: element.name, value: element.id}
+      })
+      inquirer
+      .prompt([
+        {
+          type: 'input',
+          name: 'roleName',
+          message: 'What is the name of the role?',
+        },
+        {
+          type: 'input',
+          name: 'salary',
+          message: 'What is the salary of the role?',
+        },          {
+          type: 'list',
+          name: 'departmentChoice',
+          message: 'Which department does the role belong to?',
+          choices: departmentInpId
+        },
+      ])
+      .then(res => {
+        const sql = `INSERT INTO role (title, salary, department_id)
+        VALUES (?, ?, ?)`;
+        const params = [res.roleName, res.salary, res.departmentChoice];
+        
+        db.query(sql, params, (err, result) => {
+          if (err) {
+            console.log(err);
+            return;
+          }
+          
+          startingQuestion ()
+        })
+      });
+    });
+  };
 
 serverLpr();
