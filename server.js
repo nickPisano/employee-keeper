@@ -192,6 +192,28 @@ function addEmployee() {
   });
 }
 
+function viewRoles () {
+          
+  const sql = 
+  `SELECT role.id, role.title, department.name AS department, role.salary 
+  FROM role
+  JOIN department 
+  ON role.department_id = department.id;
+  `
+  ;
+  
+  db.query(sql, (err, rows) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("\n")
+      console.table(rows)
+    }
+    console.log("\n")
+    serverLpr();
+  });
+}
+
 function updateEmployee() {
 
   const sql = `
