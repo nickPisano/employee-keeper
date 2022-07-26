@@ -79,7 +79,7 @@ const serverLpr = () => {
           break;
 
         case "Quit":
-          finishPrompt()
+          exitPrgm()
           break;
       }
     })
@@ -254,11 +254,11 @@ function updateEmployee() {
   });
 }
 
-function addRoles () {
+function addRoles() {
   const sql = `SELECT id, name FROM department `;
   let departmentInp = []
   let departmentInpId = []
-  
+
   db.query(sql, (err, rows) => {
     if (err) {
       console.log(err);
@@ -266,9 +266,9 @@ function addRoles () {
     }
     departmentInp = rows
     departmentInpId = departmentInp.map(element => {
-      return {name: element.name, value: element.id}
-      })
-      inquirer
+      return { name: element.name, value: element.id }
+    })
+    inquirer
       .prompt([
         {
           type: 'input',
@@ -279,7 +279,7 @@ function addRoles () {
           type: 'input',
           name: 'salary',
           message: 'What is the salary of the role?',
-        },          {
+        }, {
           type: 'list',
           name: 'departmentChoice',
           message: 'Which department does the role belong to?',
@@ -290,33 +290,78 @@ function addRoles () {
         const sql = `INSERT INTO role (title, salary, department_id)
         VALUES (?, ?, ?)`;
         const params = [res.roleName, res.salary, res.departmentChoice];
-        
+
         db.query(sql, params, (err, result) => {
           if (err) {
             console.log(err);
             return;
           }
-          
-          serverLpr ()
+
+          serverLpr()
         })
       });
-    });
-  };
+  });
+};
 
-  function viewDepartments() {
-            
-    const sql = `SELECT * FROM department`;
-    
-    db.query(sql, (err, rows) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log("\n")
-        console.table(rows)
-      }
+function viewDepartments() {
+
+  const sql = `SELECT * FROM department`;
+
+  db.query(sql, (err, rows) => {
+    if (err) {
+      console.log(err);
+    } else {
       console.log("\n")
-      serverLpr ();
+      console.table(rows)
+    }
+    console.log("\n")
+    serverLpr();
+  });
+}
+
+function addDepartments() {
+
+  console.log("\n")
+  inquirer
+    .prompt([
+      {
+        type: 'input',
+        name: 'departmentName',
+        message: 'What is the name of the department?',
+      },
+    ])
+    .then(res => {
+      const sql = `INSERT INTO department (name)
+      VALUES (?)`;
+      const params = [res.departmentName];
+
+
+      db.query(sql, params, (err, result) => {
+        if (err) {
+          console.log(err);
+          return;
+        }
+
+        serverLpr();
+      })
     });
-  }
+};
+
+function exitPrgm () {
+  console.log (`
+  ▄████▄   ██▓     ▒█████    ██████ ▓█████ ▓█████▄     ██▓███   ██▀███   ▒█████    ▄████  ██▀███   ▄▄▄       ███▄ ▄███▓
+ ▒██▀ ▀█  ▓██▒    ▒██▒  ██▒▒██    ▒ ▓█   ▀ ▒██▀ ██▌   ▓██░  ██▒▓██ ▒ ██▒▒██▒  ██▒ ██▒ ▀█▒▓██ ▒ ██▒▒████▄    ▓██▒▀█▀ ██▒
+ ▒▓█    ▄ ▒██░    ▒██░  ██▒░ ▓██▄   ▒███   ░██   █▌   ▓██░ ██▓▒▓██ ░▄█ ▒▒██░  ██▒▒██░▄▄▄░▓██ ░▄█ ▒▒██  ▀█▄  ▓██    ▓██░
+ ▒▓▓▄ ▄██▒▒██░    ▒██   ██░  ▒   ██▒▒▓█  ▄ ░▓█▄   ▌   ▒██▄█▓▒ ▒▒██▀▀█▄  ▒██   ██░░▓█  ██▓▒██▀▀█▄  ░██▄▄▄▄██ ▒██    ▒██ 
+ ▒ ▓███▀ ░░██████▒░ ████▓▒░▒██████▒▒░▒████▒░▒████▓    ▒██▒ ░  ░░██▓ ▒██▒░ ████▓▒░░▒▓███▀▒░██▓ ▒██▒ ▓█   ▓██▒▒██▒   ░██▒
+ ░ ░▒ ▒  ░░ ▒░▓  ░░ ▒░▒░▒░ ▒ ▒▓▒ ▒ ░░░ ▒░ ░ ▒▒▓  ▒    ▒▓▒░ ░  ░░ ▒▓ ░▒▓░░ ▒░▒░▒░  ░▒   ▒ ░ ▒▓ ░▒▓░ ▒▒   ▓▒█░░ ▒░   ░  ░
+   ░  ▒   ░ ░ ▒  ░  ░ ▒ ▒░ ░ ░▒  ░ ░ ░ ░  ░ ░ ▒  ▒    ░▒ ░       ░▒ ░ ▒░  ░ ▒ ▒░   ░   ░   ░▒ ░ ▒░  ▒   ▒▒ ░░  ░      ░
+ ░          ░ ░   ░ ░ ░ ▒  ░  ░  ░     ░    ░ ░  ░    ░░         ░░   ░ ░ ░ ░ ▒  ░ ░   ░   ░░   ░   ░   ▒   ░      ░   
+ ░ ░          ░  ░    ░ ░        ░     ░  ░   ░                   ░         ░ ░        ░    ░           ░  ░       ░   
+ ░                                          ░                                                                          
+ `);
+  process.exit();
+  
+}
 
 serverLpr();
