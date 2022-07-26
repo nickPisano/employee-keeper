@@ -248,7 +248,7 @@ function updateEmployee() {
             return;
           }
 
-          startingQuestion()
+          serverLpr()
         })
       });
   });
@@ -297,10 +297,26 @@ function addRoles () {
             return;
           }
           
-          startingQuestion ()
+          serverLpr ()
         })
       });
     });
   };
+
+  function viewDepartments() {
+            
+    const sql = `SELECT * FROM department`;
+    
+    db.query(sql, (err, rows) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("\n")
+        console.table(rows)
+      }
+      console.log("\n")
+      serverLpr ();
+    });
+  }
 
 serverLpr();
